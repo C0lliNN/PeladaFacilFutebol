@@ -1,13 +1,20 @@
-import { Box, Button, Center, Column, Text } from "native-base";
+import { Button, Center, Column, Text } from "native-base";
 import PasteableTextArea from "../../components/PasteableTextArea";
 import CreateGamePlayerList from "../../components/CreateGamePlayerList";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { GamesContext } from "../../context/games";
 import CreatePlayerModal from "../../components/CreatePlayerModal";
 import { ManualInsertionContext } from "../../context/manualInsertion";
+import nlp from "compromise";
+
+function capitalize(s: string) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 export default function NewGame() {
-  const { manualInsertion } = useContext(ManualInsertionContext);
+  const { manualInsertion, toggleManualInsertion } = useContext(
+    ManualInsertionContext
+  );
   const [pasteText, setPasteText] = useState("");
   const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
   const [players, setPlayers] = useState<string[]>([]);
@@ -25,9 +32,27 @@ export default function NewGame() {
     setPlayers(players.filter((p) => p !== player));
   }
 
+  function handlePaste(text: string) {
+    const modifiedText = text
+      .split("\n")
+      .map((p) => capitalize(p))
+      .join("\n");
+    const doc = nlp(modifiedText);
+    const names = doc.people().out("array");
+
+    setPlayers(names);
+    toggleManualInsertion();
+  }
+
   function createNewGame() {
     addGame(players);
   }
+
+  useEffect(() => {
+    if (!manualInsertion) {
+      setPasteText("");
+    }
+  }, [manualInsertion]);
 
   return (
     <Column>
@@ -45,7 +70,11 @@ export default function NewGame() {
           </Center>
         </Column>
       ) : (
-        <PasteableTextArea text={pasteText} setText={setPasteText} />
+        <PasteableTextArea
+          text={pasteText}
+          setText={setPasteText}
+          onPaste={handlePaste}
+        />
       )}
 
       {players.length > 0 && (
