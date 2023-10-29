@@ -1,10 +1,16 @@
 import React, { createContext, useState, useEffect, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
+import uuid from "react-native-uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+export type Player = {
+  id: string;
+  name: string;
+  paid: boolean;
+};
 
 export type Game = {
   id: string;
-  players: string[];
+  players: Player[];
   status: "active" | "canceled" | "finished";
   createdAt: string;
 };
@@ -15,12 +21,14 @@ export const GamesContext = createContext<{
   addGame: (players: string[]) => void;
   cancelActiveGame(): void;
   finishActiveGame(): void;
+  handlePlayerPayment(player: Player): void;
 }>({
   games: [],
   activeGame: undefined,
   addGame: (players: string[]) => {},
   cancelActiveGame: () => {},
   finishActiveGame: () => {},
+  handlePlayerPayment: (player: Player) => {},
 });
 
 type Props = {
@@ -37,8 +45,12 @@ export default function GamesProvider({ children }: Props): JSX.Element {
 
   function addGame(players: string[]) {
     const newGame: Game = {
-      id: uuidv4(),
-      players,
+      id: uuid.v4().toString(),
+      players: players.map((p) => ({
+        id: uuid.v4().toString(),
+        name: p,
+        paid: false,
+      })),
       status: "active",
       createdAt: new Date().toISOString(),
     };
@@ -67,6 +79,21 @@ export default function GamesProvider({ children }: Props): JSX.Element {
     setGames(newGames);
   }
 
+  function handlePlayerPayment(player: Player) {
+
+    if (!activeGame) {
+      return;
+    }
+
+    const newActiveGame = { ...activeGame };
+    const newPlayers = [...newActiveGame.players];
+    const playerIndex = newPlayers.findIndex((p) => p.id === player.id);
+
+    newPlayers[playerIndex].paid = true;
+    newActiveGame.players = newPlayers;
+    setGames([...games.filter((g) => g.id !== activeGame?.id), newActiveGame]);
+  }
+
   useEffect(() => {
     const loadGames = async () => {
       const games = await AsyncStorage.getItem("@games");
@@ -85,7 +112,16 @@ export default function GamesProvider({ children }: Props): JSX.Element {
   }, [games]);
 
   return (
-    <GamesContext.Provider value={{ games, activeGame, addGame, cancelActiveGame, finishActiveGame }}>
+    <GamesContext.Provider
+      value={{
+        games,
+        activeGame,
+        addGame,
+        cancelActiveGame,
+        finishActiveGame,
+        handlePlayerPayment,
+      }}
+    >
       {children}
     </GamesContext.Provider>
   );

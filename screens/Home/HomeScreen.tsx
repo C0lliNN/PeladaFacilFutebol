@@ -1,6 +1,5 @@
 import { Flex } from "native-base";
-import { useContext, useEffect } from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { useContext } from "react";
 
 import { GamesContext } from "../../context/games";
 import ActiveGame from "./ActiveGame";
@@ -12,8 +11,14 @@ export default function HomeScreen() {
 
   return (
     <Flex py="20" px="8">
-      <HomeHeader />
-      {activeGame ? <ActiveGame /> : <NewGame />}
+      {activeGame ? (
+        <ActiveGame game={activeGame} />
+      ) : (
+        <>
+          <HomeHeader />
+          <NewGame />
+        </>
+      )}
     </Flex>
   );
 }

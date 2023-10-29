@@ -1,10 +1,12 @@
-import { Column, Text, FlatList, Flex, Center, Button, IconButton, Icon } from "native-base";
+import { Column, Text, IconButton, Icon } from "native-base";
 import { AntDesign } from "@expo/vector-icons";
+import BasePlayerList from "./BasePlayerList";
 
 
 type Props = {
   players: string[];
   onRemovePlayer: (player: string) => void;
+  viewType: "create" | "payment" | "draw";
 };
 
 export default function CreateGamePlayerList(props: Props) {
@@ -16,27 +18,21 @@ export default function CreateGamePlayerList(props: Props) {
           </Text>
         ) : (
           <Column>
-            <FlatList
-              h="72"
-              data={props.players}
-              renderItem={({ item: player }) => (
-                <Flex
-                  py="2"
-                  borderBottomWidth="1"
-                  borderBottomColor="gray.400"
-                  flexDirection="row"
-                  justifyContent="space-between"
-                >
+            <BasePlayerList
+              players={props.players}
+              keyExtractor={(item) => item}
+              renderItem={(player) => (
+                <>
                   <Text fontSize="lg">{player}</Text>
+
                   <IconButton
                     onPress={() => props.onRemovePlayer(player)}
                     icon={<Icon as={AntDesign} name="delete" />}
                     colorScheme="danger"
                     size="sm"
                   />
-                </Flex>
+                </>
               )}
-              keyExtractor={(item) => item}
             />
           </Column>
         )}

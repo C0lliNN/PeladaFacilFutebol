@@ -36,6 +36,7 @@ export default function NewGame() {
           <CreateGamePlayerList
             players={players}
             onRemovePlayer={removePlayer}
+            viewType="create"
           />
           <Center mt="4">
             <Button size="sm" onPress={toggleCreatePlayerModal}>

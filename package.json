@@ -22,6 +22,7 @@
     "react-native-screens": "~3.22.0",
     "react-native-svg": "13.9.0",
     "react-native-ui-lib": "^7.9.1",
+    "react-native-uuid": "^2.0.1",
     "react-native-vector-icons": "^10.0.1",
     "uuid": "^9.0.1"
   },
