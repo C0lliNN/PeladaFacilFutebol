@@ -4,16 +4,39 @@ import { View, Text, StyleSheet } from "react-native";
 import HomeScreen from "./screens/HomeScreen";
 import HistoryScreen from "./screens/HistoryScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
+import TabIcon from "./components/TabIcon";
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Tab.Navigator initialRouteName="Home">
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="History" component={HistoryScreen} />
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={({ route }) => ({
+          headerShown: false,
+          tabBarIcon: ({ focused, color, size }) => {
+            return (
+              <TabIcon
+                routeName={route.name}
+                focused={focused}
+                color={color}
+                size={size}
+              />
+            );
+          },
+        })}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ title: "Home" }}
+        />
+        <Tab.Screen
+          name="History"
+          component={HistoryScreen}
+          options={{ title: "Histórico" }}
+        />
       </Tab.Navigator>
 
       <StatusBar style="auto" />
