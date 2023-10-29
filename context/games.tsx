@@ -8,9 +8,12 @@ export type Player = {
   paid: boolean;
 };
 
+export type Team = Player[];
+
 export type Game = {
   id: string;
   players: Player[];
+  teams?: Team[];
   status: "active" | "canceled" | "finished";
   createdAt: string;
 };
@@ -22,6 +25,7 @@ export const GamesContext = createContext<{
   cancelActiveGame(): void;
   finishActiveGame(): void;
   handlePlayerPayment(player: Player): void;
+  drawTeams(numTeams: number): void;
 }>({
   games: [],
   activeGame: undefined,
@@ -29,6 +33,7 @@ export const GamesContext = createContext<{
   cancelActiveGame: () => {},
   finishActiveGame: () => {},
   handlePlayerPayment: (player: Player) => {},
+  drawTeams: (numTeams: number) => {}
 });
 
 type Props = {
@@ -94,6 +99,34 @@ export default function GamesProvider({ children }: Props): JSX.Element {
     setGames([...games.filter((g) => g.id !== activeGame?.id), newActiveGame]);
   }
 
+  function drawTeams(numTeams: number) {
+    if (!activeGame) {
+      return;
+    }
+
+    if (activeGame.players.length < numTeams) {
+      throw new Error("Not enough players");
+    }
+
+    const newActiveGame = { ...activeGame };
+    const newPlayers = [...newActiveGame.players];
+    const shuffledPlayers = newPlayers.sort(() => Math.random() - 0.5);
+
+    const teams: Team[] = [];
+    for (let i = 0; i < numTeams; i++) {
+      teams.push([]);
+    }
+
+    let teamIndex = 0;
+    for (let i = 0; i < shuffledPlayers.length; i++) {
+      teams[teamIndex].push(shuffledPlayers[i]);
+      teamIndex = (teamIndex + 1) % numTeams;
+    }
+
+    newActiveGame.teams = teams;
+    setGames([...games.filter((g) => g.id !== activeGame?.id), newActiveGame]);
+  }
+
   useEffect(() => {
     const loadGames = async () => {
       const games = await AsyncStorage.getItem("@games");
@@ -120,6 +153,7 @@ export default function GamesProvider({ children }: Props): JSX.Element {
         cancelActiveGame,
         finishActiveGame,
         handlePlayerPayment,
+        drawTeams,
       }}
     >
       {children}

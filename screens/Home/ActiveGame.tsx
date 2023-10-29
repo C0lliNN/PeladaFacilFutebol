@@ -3,13 +3,15 @@ import { Game, GamesContext } from "../../context/games";
 import { useContext, useState } from "react";
 import CreateGamePlayerList from "../../components/CreateGamePlayerList";
 import PaymentPlayerList from "../../components/PaymentPlayerList";
+import TeamList from "../../components/TeamList";
 
 type Props = {
   game: Game;
 };
 
 export default function ActiveGame({ game }: Props) {
-  const { finishActiveGame, cancelActiveGame, handlePlayerPayment } = useContext(GamesContext);
+  const { finishActiveGame, cancelActiveGame, handlePlayerPayment } =
+    useContext(GamesContext);
   const [mode, setMode] = useState<"payment" | "draw">("payment");
 
   return (
@@ -35,10 +37,20 @@ export default function ActiveGame({ game }: Props) {
           Sorteio
         </Button>
       </Flex>
-      <PaymentPlayerList players={game.players} onPay={handlePlayerPayment} />
-      <Flex direction="row" my="3" style={{columnGap: 10}} justifyContent="flex-end">
+      {mode === "payment" && (
+        <PaymentPlayerList players={game.players} onPay={handlePlayerPayment} />
+      )}
+      {mode === "draw" && <TeamList enableDraw game={game} />}
+      <Flex
+        direction="row"
+        my="3"
+        style={{ columnGap: 10 }}
+        justifyContent="flex-end"
+      >
         <Button onPress={finishActiveGame}>Concluir</Button>
-        <Button onPress={cancelActiveGame} colorScheme= "danger">Cancelar</Button>
+        <Button onPress={cancelActiveGame} colorScheme="danger">
+          Cancelar
+        </Button>
       </Flex>
     </Box>
   );

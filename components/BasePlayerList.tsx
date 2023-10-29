@@ -9,7 +9,7 @@ type Props<T> = {
 export default function BasePlayerList<T>(props: Props<T>) {
     return (
       <FlatList
-        h="72"
+        maxH="72"
         data={props.players}
         renderItem={({ item: player }) => (
           <Flex
