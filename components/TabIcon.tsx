@@ -16,6 +16,5 @@ export default function TabIcon({ routeName, focused, color, size }: TabIconProp
     iconName = focused ? "refresh" : "refresh-outline";
   }
 
-  // You can return any component that you like here!
   return <Ionicons name={iconName} size={size} color={color} />;
 }

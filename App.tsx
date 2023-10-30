@@ -20,6 +20,8 @@ export default function App() {
               initialRouteName="Home"
               screenOptions={({ route }) => ({
                 headerShown: false,
+                tabBarInactiveTintColor: "#71717a",
+                tabBarActiveTintColor: "#0891b2",
                 tabBarIcon: ({ focused, color, size }) => {
                   return (
                     <TabIcon
