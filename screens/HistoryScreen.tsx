@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Game, GamesContext } from "../context/games";
-import { View, Button, Text, Heading } from "native-base";
+import { View, Heading } from "native-base";
 import GameList from "../components/GameList";
 import GameDetailsModal from "../components/GameDetailsModal";
 

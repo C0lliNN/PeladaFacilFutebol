@@ -1,10 +1,8 @@
 import {
-  Badge,
   Button,
   Column,
   FlatList,
   Flex,
-  Spacer,
   Text,
 } from "native-base";
 import { Game } from "../context/games";

@@ -18,7 +18,7 @@ export default function NewGame() {
   const [pasteText, setPasteText] = useState("");
   const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
   const [players, setPlayers] = useState<string[]>([]);
-  const { addGame, activeGame } = useContext(GamesContext);
+  const { addGame } = useContext(GamesContext);
 
   const canCreateGame = useMemo(() => players.length > 0, [players]);
 

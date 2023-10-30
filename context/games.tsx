@@ -29,11 +29,11 @@ export const GamesContext = createContext<{
 }>({
   games: [],
   activeGame: undefined,
-  addGame: (players: string[]) => {},
+  addGame: () => {},
   cancelActiveGame: () => {},
   finishActiveGame: () => {},
-  handlePlayerPayment: (player: Player) => {},
-  drawTeams: (numTeams: number) => {}
+  handlePlayerPayment: () => {},
+  drawTeams: () => {}
 });
 
 type Props = {

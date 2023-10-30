@@ -1,7 +1,6 @@
-import { Box, Button, Flex, Heading, Row, Text } from "native-base";
+import { Box, Button, Flex, Heading } from "native-base";
 import { Game, GamesContext } from "../../context/games";
 import { useContext, useState } from "react";
-import CreateGamePlayerList from "../../components/CreateGamePlayerList";
 import PaymentPlayerList from "../../components/PaymentPlayerList";
 import TeamList from "../../components/TeamList";
 

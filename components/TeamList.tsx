@@ -3,8 +3,6 @@ import {
   Button,
   Column,
   Flex,
-  Input,
-  ScrollView,
   SectionList,
   Select,
   Text,
@@ -12,7 +10,6 @@ import {
 } from "native-base";
 import { useContext, useState } from "react";
 import { Game, GamesContext } from "../context/games";
-import BasePlayerList from "./BasePlayerList";
 
 type Props = {
   game: Game;
