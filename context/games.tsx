@@ -14,7 +14,7 @@ export type Game = {
   id: string;
   players: Player[];
   teams?: Team[];
-  status: "active" | "canceled" | "finished";
+  status: "active" | "cancelled" | "finished";
   createdAt: string;
 };
 
@@ -63,24 +63,21 @@ export default function GamesProvider({ children }: Props): JSX.Element {
   }
 
   function cancelActiveGame() {
-    const newGames = [...games];
-    const game = newGames.find((game) => game.status === "active");
-    if (!game) {
-      return;
-    }
-
-    game.status = "canceled";
-    setGames(newGames);
+    changeActiveGameStatus("cancelled");
   }
 
   function finishActiveGame() {
+    changeActiveGameStatus("finished");
+  }
+
+  function changeActiveGameStatus(newStatus: Game["status"]) {
     const newGames = [...games];
     const game = newGames.find((game) => game.status === "active");
     if (!game) {
       return;
     }
 
-    game.status = "finished";
+    game.status = newStatus;
     setGames(newGames);
   }
 

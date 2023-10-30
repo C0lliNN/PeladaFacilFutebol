@@ -1,5 +1,5 @@
 import { Button, FormControl, Input, Modal } from "native-base";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 type Props = {
   show: boolean;
@@ -9,6 +9,7 @@ type Props = {
 
 export default function CreatePlayerModal(props: Props) {
   const [name, setName] = useState("");
+  const inputRef = useRef(null);
 
   function handleAddPlayer() {
     props.addPlayer(name);
@@ -17,7 +18,12 @@ export default function CreatePlayerModal(props: Props) {
   }
 
   return (
-    <Modal isOpen={props.show} onClose={props.onClose} safeAreaTop>
+    <Modal
+      isOpen={props.show}
+      onClose={props.onClose}
+      safeAreaTop
+      initialFocusRef={inputRef}
+    >
       <Modal.Content style={{ marginBottom: "auto", marginTop: 60 }}>
         <Modal.CloseButton />
         <Modal.Header>Adicionar Jogador</Modal.Header>
@@ -25,9 +31,9 @@ export default function CreatePlayerModal(props: Props) {
           <FormControl>
             <FormControl.Label>Nome</FormControl.Label>
             <Input
-              autoFocus
               value={name}
               onChangeText={(text) => setName(text)}
+              ref={inputRef}
             />
           </FormControl>
         </Modal.Body>

@@ -18,9 +18,9 @@ export default function NewGame() {
   const [pasteText, setPasteText] = useState("");
   const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
   const [players, setPlayers] = useState<string[]>([]);
-  const { addGame } = useContext(GamesContext);
+  const { addGame, activeGame } = useContext(GamesContext);
 
-  const canCreateGame = useMemo(() => players.length > 0, [players])
+  const canCreateGame = useMemo(() => players.length > 0, [players]);
 
   function toggleCreatePlayerModal() {
     setShowCreatePlayerModal(!showCreatePlayerModal);
@@ -56,6 +56,13 @@ export default function NewGame() {
     }
   }, [manualInsertion]);
 
+  // Set the manual insertion to false when the active game is finished
+  useEffect(() => {
+    if (manualInsertion) {
+      toggleManualInsertion();
+    }
+  }, []);
+
   return (
     <Column>
       {manualInsertion ? (
@@ -86,7 +93,12 @@ export default function NewGame() {
       )}
 
       <Center mt="5">
-        <Button colorScheme="success" onPress={createNewGame} isDisabled={!canCreateGame} _disabled={{colorScheme: "gray"}}>
+        <Button
+          colorScheme="success"
+          onPress={createNewGame}
+          isDisabled={!canCreateGame}
+          _disabled={{ colorScheme: "gray" }}
+        >
           Criar pelada
         </Button>
       </Center>

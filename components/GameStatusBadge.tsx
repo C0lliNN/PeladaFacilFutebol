@@ -5,13 +5,13 @@ import { Game } from "../context/games";
 const statusTextMapping = {
   active: "Ativa",
   finished: "Finalizada",
-  canceled: "Cancelada",
+  cancelled: "Cancelada",
 };
 
 const statusColorMapping = {
   active: "info",
   finished: "success",
-  canceled: "danger",
+  cancelled: "danger",
 };
 
 export default function GameStatusBadge({ status }: { status: Game["status"] }) {

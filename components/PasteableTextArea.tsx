@@ -16,6 +16,7 @@ export default function PasteableTextArea(props: Props) {
     <TextArea
       placeholder="Cole a lista aqui"
       showSoftInputOnFocus={false}
+      focusable={false}
       autoCompleteType={"off"}
       size="lg"
       value={props.text}
