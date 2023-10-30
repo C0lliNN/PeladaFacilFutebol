@@ -1,7 +1,7 @@
 import { Button, Center, Column, Text } from "native-base";
 import PasteableTextArea from "../../components/PasteableTextArea";
 import CreateGamePlayerList from "../../components/CreateGamePlayerList";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { GamesContext } from "../../context/games";
 import CreatePlayerModal from "../../components/CreatePlayerModal";
 import { ManualInsertionContext } from "../../context/manualInsertion";
@@ -19,6 +19,8 @@ export default function NewGame() {
   const [showCreatePlayerModal, setShowCreatePlayerModal] = useState(false);
   const [players, setPlayers] = useState<string[]>([]);
   const { addGame } = useContext(GamesContext);
+
+  const canCreateGame = useMemo(() => players.length > 0, [players])
 
   function toggleCreatePlayerModal() {
     setShowCreatePlayerModal(!showCreatePlayerModal);
@@ -84,7 +86,7 @@ export default function NewGame() {
       )}
 
       <Center mt="5">
-        <Button colorScheme="success" onPress={createNewGame}>
+        <Button colorScheme="success" onPress={createNewGame} isDisabled={!canCreateGame} _disabled={{colorScheme: "gray"}}>
           Criar pelada
         </Button>
       </Center>
